@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MediaTek86.bddmanager;
+using MediaTek86.modele;
 using MySql.Data.MySqlClient;
 
 namespace MediaTek86.dal
@@ -29,6 +30,27 @@ namespace MediaTek86.dal
             bool authentifie = reader.Read();
             reader.Close();
             return authentifie;
+        }
+
+        public List<Personnel> GetLesPersonnels()
+        {
+            List<Personnel> lesPersonnels = new List<Personnel>();
+            string req = "SELECT p.idpersonnel, p.nom, p.prenom, p.tel, p.mail, p.idservice ";
+            req += "FROM personnel p ORDER BY p.nom, p.prenom;";
+            MySqlDataReader reader = bddManager.ReqSelect(req);
+            while (reader.Read())
+            {
+                int idpersonnel = (int)reader["idpersonnel"];
+                string nom = reader["nom"].ToString();
+                string prenom = reader["prenom"].ToString();
+                string tel = reader["tel"].ToString();
+                string mail = reader["mail"].ToString();
+                int idservice = (int)reader["idservice"];
+                Personnel personnel = new Personnel(idpersonnel, nom, prenom, tel, mail, idservice);
+                lesPersonnels.Add(personnel);
+            }
+            reader.Close();
+            return lesPersonnels;
         }
     }
 }

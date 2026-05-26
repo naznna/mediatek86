@@ -66,5 +66,15 @@ namespace MediaTek86.vue
                 RemplirListePersonnel();
             }
         }
+
+        private void dgvPersonnel_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvPersonnel.CurrentRow != null)
+            {
+                Personnel personnel = (Personnel)bdgPersonnel.Current;
+                FrmAbsences frmAbsences = new FrmAbsences(personnel);
+                frmAbsences.ShowDialog();
+            }
+        }
     }
 }

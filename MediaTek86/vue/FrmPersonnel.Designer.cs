@@ -44,6 +44,7 @@
             this.dgvPersonnel.RowTemplate.Height = 24;
             this.dgvPersonnel.Size = new System.Drawing.Size(240, 150);
             this.dgvPersonnel.TabIndex = 0;
+            this.dgvPersonnel.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPersonnel_CellDoubleClick);
             // 
             // button1
             // 

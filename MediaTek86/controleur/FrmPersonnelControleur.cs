@@ -41,5 +41,30 @@ namespace MediaTek86.controleur
         {
             acces.ModifierPersonnel(personnel);
         }
+
+        public List<Motif> GetLesMotifs()
+        {
+            return acces.GetLesMotifs();
+        }
+
+        public List<Absence> GetLesAbsences(int idPersonnel)
+        {
+            return acces.GetLesAbsences(idPersonnel);
+        }
+
+        public void AjouterAbsence(Absence absence)
+        {
+            acces.AjouterAbsence(absence);
+        }
+
+        public void SupprimerAbsence(Absence absence)
+        {
+            acces.SupprimerAbsence(absence);
+        }
+
+        public void ModifierAbsence(Absence absence, DateTime ancienneDateDebut)
+        {
+            acces.ModifierAbsence(absence, ancienneDateDebut);
+        }
     }
 }

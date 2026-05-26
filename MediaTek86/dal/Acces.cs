@@ -109,5 +109,85 @@ namespace MediaTek86.dal
             };
             bddManager.ReqUpdate(req, parameters);
         }
+
+        public List<Motif> GetLesMotifs()
+        {
+            List<Motif> lesMotifs = new List<Motif>();
+            string req = "SELECT m.idmotif, m.libelle FROM motif m ORDER BY m.libelle;";
+            MySqlDataReader reader = bddManager.ReqSelect(req);
+            while (reader.Read())
+            {
+                int idmotif = (int)reader["idmotif"];
+                string libelle = reader["libelle"].ToString();
+                Motif motif = new Motif(idmotif, libelle);
+                lesMotifs.Add(motif);
+            }
+            reader.Close();
+            return lesMotifs;
+        }
+
+        public List<Absence> GetLesAbsences(int idPersonnel)
+        {
+            List<Absence> lesAbsences = new List<Absence>();
+            string req = "SELECT a.idpersonnel, a.datedebut, a.datefin, a.idmotif ";
+            req += "FROM absence a WHERE a.idpersonnel = @idpersonnel ";
+            req += "ORDER BY a.datedebut DESC;";
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                { "@idpersonnel", idPersonnel }
+            };
+            MySqlDataReader reader = bddManager.ReqSelect(req, parameters);
+            while (reader.Read())
+            {
+                int idpersonnel = (int)reader["idpersonnel"];
+                DateTime datedebut = (DateTime)reader["datedebut"];
+                DateTime datefin = (DateTime)reader["datefin"];
+                int idmotif = (int)reader["idmotif"];
+                Absence absence = new Absence(idpersonnel, datedebut, datefin, idmotif);
+                lesAbsences.Add(absence);
+            }
+            reader.Close();
+            return lesAbsences;
+        }
+
+        public void AjouterAbsence(Absence absence)
+        {
+            string req = "INSERT INTO absence(idpersonnel, datedebut, datefin, idmotif) ";
+            req += "VALUES (@idpersonnel, @datedebut, @datefin, @idmotif);";
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                { "@idpersonnel", absence.IdPersonnel },
+                { "@datedebut", absence.DateDebut },
+                { "@datefin", absence.DateFin },
+                { "@idmotif", absence.IdMotif }
+            };
+            bddManager.ReqUpdate(req, parameters);
+        }
+
+        public void SupprimerAbsence(Absence absence)
+        {
+            string req = "DELETE FROM absence WHERE idpersonnel = @idpersonnel AND datedebut = @datedebut;";
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                { "@idpersonnel", absence.IdPersonnel },
+                { "@datedebut", absence.DateDebut }
+            };
+            bddManager.ReqUpdate(req, parameters);
+        }
+
+        public void ModifierAbsence(Absence absence, DateTime ancienneDateDebut)
+        {
+            string req = "UPDATE absence SET datedebut = @datedebut, datefin = @datefin, idmotif = @idmotif ";
+            req += "WHERE idpersonnel = @idpersonnel AND datedebut = @anciennedatedebut;";
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                { "@idpersonnel", absence.IdPersonnel },
+                { "@datedebut", absence.DateDebut },
+                { "@datefin", absence.DateFin },
+                { "@idmotif", absence.IdMotif },
+                { "@anciennedatedebut", ancienneDateDebut }
+            };
+            bddManager.ReqUpdate(req, parameters);
+        }
     }
 }

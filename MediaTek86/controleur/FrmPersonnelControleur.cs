@@ -36,5 +36,10 @@ namespace MediaTek86.controleur
         {
             acces.SupprimerPersonnel(personnel);
         }
+
+        public void ModifierPersonnel(Personnel personnel)
+        {
+            acces.ModifierPersonnel(personnel);
+        }
     }
 }

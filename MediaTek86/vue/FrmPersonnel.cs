@@ -55,5 +55,16 @@ namespace MediaTek86.vue
                 }
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (dgvPersonnel.CurrentRow != null)
+            {
+                Personnel personnel = (Personnel)bdgPersonnel.Current;
+                FrmPersonnelAjout frmModif = new FrmPersonnelAjout(personnel);
+                frmModif.ShowDialog();
+                RemplirListePersonnel();
+            }
+        }
     }
 }

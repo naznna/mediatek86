@@ -93,5 +93,21 @@ namespace MediaTek86.dal
             };
             bddManager.ReqUpdate(req, parameters);
         }
+
+        public void ModifierPersonnel(Personnel personnel)
+        {
+            string req = "UPDATE personnel SET nom = @nom, prenom = @prenom, tel = @tel, mail = @mail, idservice = @idservice ";
+            req += "WHERE idpersonnel = @idpersonnel;";
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                { "@idpersonnel", personnel.IdPersonnel },
+                { "@nom", personnel.Nom },
+                { "@prenom", personnel.Prenom },
+                { "@tel", personnel.Tel },
+                { "@mail", personnel.Mail },
+                { "@idservice", personnel.IdService }
+            };
+            bddManager.ReqUpdate(req, parameters);
+        }
     }
 }

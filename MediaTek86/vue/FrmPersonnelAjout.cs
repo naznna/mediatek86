@@ -12,14 +12,16 @@ using System.Windows.Forms;
 
 namespace MediaTek86.vue
 {
-    public partial class FrmPersonnelAjout : Form
+    internal partial class FrmPersonnelAjout : Form
     {
         private FrmPersonnelControleur controleur;
+        private Personnel personnel = null;
 
-        public FrmPersonnelAjout()
+        public FrmPersonnelAjout(Personnel personnel = null)
         {
             InitializeComponent();
             controleur = new FrmPersonnelControleur();
+            this.personnel = personnel;
         }
 
         private void FrmPersonnelAjout_Load(object sender, EventArgs e)
@@ -27,6 +29,22 @@ namespace MediaTek86.vue
             List<Service> lesServices = controleur.GetLesServices();
             cboService.DataSource = lesServices;
             cboService.DisplayMember = "Nom";
+
+            if (personnel != null)
+            {
+                this.Text = "Modifier un personnel";
+                txtNom.Text = personnel.Nom;
+                txtPrenom.Text = personnel.Prenom;
+                txtTel.Text = personnel.Tel;
+                txtMail.Text = personnel.Mail;
+                foreach (Service s in lesServices)
+                {
+                    if (s.IdService == personnel.IdService)
+                    {
+                        cboService.SelectedItem = s;
+                    }
+                }
+            }
         }
 
         private void btnAnnuler_Click(object sender, EventArgs e)
@@ -42,8 +60,17 @@ namespace MediaTek86.vue
             string mail = txtMail.Text;
             Service service = (Service)cboService.SelectedItem;
             int idService = service.IdService;
-            Personnel personnel = new Personnel(0, nom, prenom, tel, mail, idService);
-            controleur.AjouterPersonnel(personnel);
+
+            if (personnel == null)
+            {
+                Personnel nouveau = new Personnel(0, nom, prenom, tel, mail, idService);
+                controleur.AjouterPersonnel(nouveau);
+            }
+            else
+            {
+                Personnel modifie = new Personnel(personnel.IdPersonnel, nom, prenom, tel, mail, idService);
+                controleur.ModifierPersonnel(modifie);
+            }
             this.Close();
         }
     }

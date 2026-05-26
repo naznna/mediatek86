@@ -235,6 +235,7 @@ namespace MediaTek86.dal
         /// <param name="ancienneDateDebut">ancienne date debut</param>
         public void ModifierAbsence(Absence absence, DateTime ancienneDateDebut)
         {
+           
             string req = "UPDATE absence SET datedebut = @datedebut, datefin = @datefin, idmotif = @idmotif ";
             req += "WHERE idpersonnel = @idpersonnel AND datedebut = @anciennedatedebut;";
             Dictionary<string, object> parameters = new Dictionary<string, object>

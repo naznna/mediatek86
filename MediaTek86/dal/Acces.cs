@@ -9,15 +9,31 @@ using MySql.Data.MySqlClient;
 
 namespace MediaTek86.dal
 {
+    /// <summary>
+    /// classe d'acces aux donnees (toutes les requetes sql)
+    /// </summary>
     internal class Acces
     {
+        /// <summary>
+        /// chaine de connexion mysql
+        /// </summary>
         private static readonly string connectionString = "server=localhost;user id=mediatekuser;password=MediaTek86!;database=mediatek86;SslMode=Disabled;AllowPublicKeyRetrieval=true";
         private readonly BddManager bddManager = null;
+
+        /// <summary>
+        /// constructeur, recupere l'instance du bddmanager
+        /// </summary>
         public Acces()
         {
             bddManager = BddManager.GetInstance(connectionString);
         }
 
+        /// <summary>
+        /// verifie login et mdp du responsable
+        /// </summary>
+        /// <param name="login">login</param>
+        /// <param name="pwd">mot de passe</param>
+        /// <returns>true si ok</returns>
         public bool ControleAuthentification(string login, string pwd)
         {
             string req = "SELECT * FROM responsable WHERE login = @login AND pwd = SHA2(@pwd, 256);";
@@ -32,6 +48,10 @@ namespace MediaTek86.dal
             return authentifie;
         }
 
+        /// <summary>
+        /// recupere tous les personnels
+        /// </summary>
+        /// <returns>liste personnels</returns>
         public List<Personnel> GetLesPersonnels()
         {
             List<Personnel> lesPersonnels = new List<Personnel>();
@@ -53,6 +73,10 @@ namespace MediaTek86.dal
             return lesPersonnels;
         }
 
+        /// <summary>
+        /// recupere tous les services
+        /// </summary>
+        /// <returns>liste services</returns>
         public List<Service> GetLesServices()
         {
             List<Service> lesServices = new List<Service>();
@@ -69,6 +93,10 @@ namespace MediaTek86.dal
             return lesServices;
         }
 
+        /// <summary>
+        /// ajoute un personnel
+        /// </summary>
+        /// <param name="personnel">le personnel</param>
         public void AjouterPersonnel(Personnel personnel)
         {
             string req = "INSERT INTO personnel(nom, prenom, tel, mail, idservice) ";
@@ -84,6 +112,10 @@ namespace MediaTek86.dal
             bddManager.ReqUpdate(req, parameters);
         }
 
+        /// <summary>
+        /// supprime un personnel
+        /// </summary>
+        /// <param name="personnel">le personnel</param>
         public void SupprimerPersonnel(Personnel personnel)
         {
             string req = "DELETE FROM personnel WHERE idpersonnel = @idpersonnel;";
@@ -94,6 +126,10 @@ namespace MediaTek86.dal
             bddManager.ReqUpdate(req, parameters);
         }
 
+        /// <summary>
+        /// modifie un personnel
+        /// </summary>
+        /// <param name="personnel">le personnel</param>
         public void ModifierPersonnel(Personnel personnel)
         {
             string req = "UPDATE personnel SET nom = @nom, prenom = @prenom, tel = @tel, mail = @mail, idservice = @idservice ";
@@ -110,6 +146,10 @@ namespace MediaTek86.dal
             bddManager.ReqUpdate(req, parameters);
         }
 
+        /// <summary>
+        /// recupere tous les motifs
+        /// </summary>
+        /// <returns>liste motifs</returns>
         public List<Motif> GetLesMotifs()
         {
             List<Motif> lesMotifs = new List<Motif>();
@@ -126,6 +166,11 @@ namespace MediaTek86.dal
             return lesMotifs;
         }
 
+        /// <summary>
+        /// recupere les absences d'un personnel
+        /// </summary>
+        /// <param name="idPersonnel">id du personnel</param>
+        /// <returns>liste absences</returns>
         public List<Absence> GetLesAbsences(int idPersonnel)
         {
             List<Absence> lesAbsences = new List<Absence>();
@@ -150,6 +195,10 @@ namespace MediaTek86.dal
             return lesAbsences;
         }
 
+        /// <summary>
+        /// ajoute une absence
+        /// </summary>
+        /// <param name="absence">l'absence</param>
         public void AjouterAbsence(Absence absence)
         {
             string req = "INSERT INTO absence(idpersonnel, datedebut, datefin, idmotif) ";
@@ -164,6 +213,10 @@ namespace MediaTek86.dal
             bddManager.ReqUpdate(req, parameters);
         }
 
+        /// <summary>
+        /// supprime une absence
+        /// </summary>
+        /// <param name="absence">l'absence</param>
         public void SupprimerAbsence(Absence absence)
         {
             string req = "DELETE FROM absence WHERE idpersonnel = @idpersonnel AND datedebut = @datedebut;";
@@ -175,6 +228,11 @@ namespace MediaTek86.dal
             bddManager.ReqUpdate(req, parameters);
         }
 
+        /// <summary>
+        /// modifie une absence
+        /// </summary>
+        /// <param name="absence">l'absence modifiee</param>
+        /// <param name="ancienneDateDebut">ancienne date debut</param>
         public void ModifierAbsence(Absence absence, DateTime ancienneDateDebut)
         {
             string req = "UPDATE absence SET datedebut = @datedebut, datefin = @datefin, idmotif = @idmotif ";

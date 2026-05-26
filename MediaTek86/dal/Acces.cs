@@ -52,5 +52,46 @@ namespace MediaTek86.dal
             reader.Close();
             return lesPersonnels;
         }
+
+        public List<Service> GetLesServices()
+        {
+            List<Service> lesServices = new List<Service>();
+            string req = "SELECT s.idservice, s.nom FROM service s ORDER BY s.nom;";
+            MySqlDataReader reader = bddManager.ReqSelect(req);
+            while (reader.Read())
+            {
+                int idservice = (int)reader["idservice"];
+                string nom = reader["nom"].ToString();
+                Service service = new Service(idservice, nom);
+                lesServices.Add(service);
+            }
+            reader.Close();
+            return lesServices;
+        }
+
+        public void AjouterPersonnel(Personnel personnel)
+        {
+            string req = "INSERT INTO personnel(nom, prenom, tel, mail, idservice) ";
+            req += "VALUES (@nom, @prenom, @tel, @mail, @idservice);";
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                { "@nom", personnel.Nom },
+                { "@prenom", personnel.Prenom },
+                { "@tel", personnel.Tel },
+                { "@mail", personnel.Mail },
+                { "@idservice", personnel.IdService }
+            };
+            bddManager.ReqUpdate(req, parameters);
+        }
+
+        public void SupprimerPersonnel(Personnel personnel)
+        {
+            string req = "DELETE FROM personnel WHERE idpersonnel = @idpersonnel;";
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                { "@idpersonnel", personnel.IdPersonnel }
+            };
+            bddManager.ReqUpdate(req, parameters);
+        }
     }
 }

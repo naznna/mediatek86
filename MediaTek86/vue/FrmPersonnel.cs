@@ -30,5 +30,30 @@ namespace MediaTek86.vue
             bdgPersonnel.DataSource = lesPersonnels;
             dgvPersonnel.DataSource = bdgPersonnel;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FrmPersonnelAjout frmAjout = new FrmPersonnelAjout();
+            frmAjout.ShowDialog();
+            RemplirListePersonnel();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (dgvPersonnel.CurrentRow != null)
+            {
+                Personnel personnel = (Personnel)bdgPersonnel.Current;
+                DialogResult reponse = MessageBox.Show(
+                    "Voulez-vous vraiment supprimer " + personnel.Nom + " " + personnel.Prenom + " ?",
+                    "Confirmation de suppression",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+                if (reponse == DialogResult.Yes)
+                {
+                    controleur.SupprimerPersonnel(personnel);
+                    RemplirListePersonnel();
+                }
+            }
+        }
     }
 }

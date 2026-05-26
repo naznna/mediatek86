@@ -21,5 +21,20 @@ namespace MediaTek86.controleur
         {
             return acces.GetLesPersonnels();
         }
+
+        public List<Service> GetLesServices()
+        {
+            return acces.GetLesServices();
+        }
+
+        public void AjouterPersonnel(Personnel personnel)
+        {
+            acces.AjouterPersonnel(personnel);
+        }
+
+        public void SupprimerPersonnel(Personnel personnel)
+        {
+            acces.SupprimerPersonnel(personnel);
+        }
     }
 }

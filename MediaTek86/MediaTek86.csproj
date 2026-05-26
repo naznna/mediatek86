@@ -123,6 +123,12 @@
     <Compile Include="vue\FrmPersonnel.Designer.cs">
       <DependentUpon>FrmPersonnel.cs</DependentUpon>
     </Compile>
+    <Compile Include="vue\FrmPersonnelAjout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="vue\FrmPersonnelAjout.Designer.cs">
+      <DependentUpon>FrmPersonnelAjout.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -140,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="vue\FrmPersonnel.resx">
       <DependentUpon>FrmPersonnel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="vue\FrmPersonnelAjout.resx">
+      <DependentUpon>FrmPersonnelAjout.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

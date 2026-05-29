@@ -1,22 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
 namespace MediaTek86.bddmanager
 {
-    internal class BddManager
+    /// <summary>
+    /// classe singleton pour la connexion mysql
+    /// </summary>
+    public class BddManager
     {
         private static BddManager instance = null;
         private readonly MySqlConnection connection;
+
+        /// <summary>
+        /// constructeur privé, ouvre la co
+        /// </summary>
+        /// <param name="stringConnect">chaine de connexion</param>
         private BddManager(string stringConnect)
         {
             connection = new MySqlConnection(stringConnect);
             connection.Open();
         }
 
+        /// <summary>
+        /// récupère l'instance unique (singleton)
+        /// </summary>
+        /// <param name="stringConnect">chaine de connexion</param>
+        /// <returns>instance de BddManager</returns>
         public static BddManager GetInstance(string stringConnect)
         {
             if (instance == null)
@@ -25,6 +35,12 @@ namespace MediaTek86.bddmanager
             }
             return instance;
         }
+
+        /// <summary>
+        /// exécute insert/update/delete
+        /// </summary>
+        /// <param name="stringQuery">requete sql</param>
+        /// <param name="parameters">paramètres</param>
         public void ReqUpdate(string stringQuery, Dictionary<string, object> parameters = null)
         {
             MySqlCommand command = new MySqlCommand(stringQuery, connection);
@@ -37,6 +53,13 @@ namespace MediaTek86.bddmanager
             }
             command.ExecuteNonQuery();
         }
+
+        /// <summary>
+        /// exécute un select et renvoie le reader
+        /// </summary>
+        /// <param name="stringQuery">requete sql</param>
+        /// <param name="parameters">paramètres</param>
+        /// <returns>le MySqlDataReader</returns>
         public MySqlDataReader ReqSelect(string stringQuery, Dictionary<string, object> parameters = null)
         {
             MySqlCommand command = new MySqlCommand(stringQuery, connection);
